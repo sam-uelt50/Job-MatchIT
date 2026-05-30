@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - JobMatch ET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .admin-login-container {
+            background: white;
+            border-radius: 28px;
+            padding: 48px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .admin-badge {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .logo-icon i { font-size: 2rem; color: white; }
+        h2 { text-align: center; margin-bottom: 24px; color: #1e293b; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #64748b; }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 1rem;
+        }
+        input:focus { outline: none; border-color: #3b82f6; }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+        .error { color: #ef4444; text-align: center; margin-top: 16px; }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .back-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="admin-login-container">
+        <div class="logo-icon"><i class="fas fa-user-shield"></i></div>
+        <div style="text-align: center;">
+            <span class="admin-badge"><i class="fas fa-lock"></i> ADMIN ACCESS ONLY</span>
+        </div>
+        <h2>Admin Portal</h2>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="adminEmail" placeholder="admin@jobmatch.com" value="admin@jobmatch.com">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="adminPassword" placeholder="Enter password" value="admin123">
+        </div>
+        <button onclick="adminLogin()">Login as Admin</button>
+        <div id="errorMsg" class="error"></div>
+        <div class="back-link"><a href="index.html">← Back to Main Site</a></div>
+    </div>
+
+    <script>
+        const API_BASE = "http://localhost:8000/api";
+
+        async function adminLogin() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('errorMsg');
+            
+            if (!email || !password) {
+                errorDiv.innerText = 'Please enter email and password';
+                return;
+            }
+            
+            errorDiv.innerText = '';
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    errorDiv.innerText = data.detail || 'Invalid credentials';
+                    return;
+                }
+                
+                if (data.user_type !== 'admin') {
+                    errorDiv.innerText = 'Access denied. Admin privileges required.';
+                    return;
+                }
+                
+                localStorage.setItem('token', data.access_token);
+                localStorage.setItem('user_id', data.user_id);
+                localStorage.setItem('userName', data.name);
+                localStorage.setItem('user_type', data.user_type);
+                
+                window.location.href = 'admin-dashboard.html';
+                
+            } catch(error) {
+                errorDiv.innerText = 'Connection error. Make sure backend is running on port 8000.';
+                console.error('Login error:', error);
+            }
+        }
+        
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') adminLogin();
+        });
+    </script>
+</body>
+</html>

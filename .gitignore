@@ -1,0 +1,51 @@
+﻿# Python
+__pycache__/
+*.pyc
+*.pyo
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Database
+*.db
+*.sqlite3
+job_recruitment.db
+
+# ML Models (too large for GitHub)
+*.pkl
+*.h5
+*.joblib
+
+# Data files (CSV files - too large)
+*.csv
+
+# Test files
+test_*.py
+*_test.py
+debug.py
+
+# Temporary files
+*.log
+*.tmp
+*.txt
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.txt
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Frontend node modules (if any)
+node_modules/
+
+# System files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch ET - AI-Powered Job Matching Platform | Ethiopia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e88e5;
+            --primary-dark: #1565c0;
+            --primary-light: #64b5f6;
+            --secondary: #0f9d58;
+            --accent: #e94560;
+            --dark: #0a3a5c;
+            --gray: #4a5568;
+            --light: #f0f8ff;
+            --white: #ffffff;
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+            --ethiopia-green: #078930;
+            --ethiopia-yellow: #fcdd09;
+            --ethiopia-red: #da121a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ethiopian Flag Inspired Gradient Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--ethiopia-green) 0%, var(--ethiopia-yellow) 50%, var(--ethiopia-red) 100%);
+            opacity: 0.12;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #e8f4fd 0%, #d4e8f5 100%);
+            z-index: -1;
+        }
+
+        /* Animated particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(30,136,229,0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(30,136,229,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--ethiopia-green), var(--ethiopia-yellow), var(--ethiopia-red));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .logo-text span { 
+            background: linear-gradient(135deg, var(--ethiopia-green), var(--ethiopia-yellow), var(--ethiopia-red));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo-badge {
+            font-size: 0.7rem;
+            background: linear-gradient(135deg, var(--ethiopia-green), var(--ethiopia-yellow), var(--ethiopia-red));
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #1e88e5; }
+
+        /* Hero Section */
+        .hero {
+            margin: 1.5rem;
+            border-radius: 30px;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(30,136,229,0.95), rgba(21,101,192,0.95));
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: var(--shadow-lg);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            color: rgba(255,255,255,0.95);
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: white;
+            color: #1e88e5;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: white;
+            color: #1e88e5;
+            transform: translateY(-3px);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: -40px auto 2rem;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border: 1px solid rgba(30,136,229,0.1);
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e88e5;
+        }
+        .stat-label {
+            color: var(--gray);
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Portal Cards */
+        .portal-section {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+        .section-title span {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        .portal-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(30,136,229,0.1);
+        }
+        .portal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+        .portal-header {
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+        .portal-header.candidate {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+        }
+        .portal-header.company {
+            background: linear-gradient(135deg, #0f9d58, #0b5e2e);
+        }
+        .portal-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .portal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .portal-header p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+        .portal-body {
+            padding: 1.5rem;
+        }
+        .feature-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        .feature-list li {
+            padding: 0.6rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        .feature-list li i {
+            color: #1e88e5;
+            width: 20px;
+        }
+        .ai-chip {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            margin-left: 8px;
+        }
+        .portal-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .portal-btn.candidate {
+            background: #1e88e5;
+            color: white;
+        }
+        .portal-btn.company {
+            background: #0f9d58;
+            color: white;
+        }
+        .portal-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        /* Features Section */
+        .features {
+            background: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin: 2rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .feature-item {
+            padding: 1.5rem;
+            transition: all 0.3s;
+            border-radius: 16px;
+        }
+        .feature-item:hover {
+            background: var(--light);
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .feature-item h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .feature-item p {
+            color: var(--gray);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: white;
+            padding: 4rem 2rem;
+            margin: 2rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .step {
+            text-align: center;
+            transition: all 0.3s;
+            padding: 1rem;
+            border-radius: 16px;
+        }
+        .step:hover {
+            background: var(--light);
+            transform: translateY(-5px);
+        }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+        .step h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .step p {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        /* Match Score Guide */
+        .match-guide {
+            background: white;
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 2rem auto;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .match-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .match-item:hover { transform: scale(1.05); }
+        .match-excellent { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+        .match-great { background: linear-gradient(135deg, #2193b0, #6dd5ed); color: white; }
+        .match-good { background: linear-gradient(135deg, #f2994a, #f2c94c); color: #333; }
+        .match-potential { background: linear-gradient(135deg, #ff6a00, #ee0979); color: white; }
+        .match-low { background: linear-gradient(135deg, #c31432, #240b36); color: white; }
+
+        /* Testimonials */
+        .testimonials {
+            background: white;
+            padding: 4rem 2rem;
+            margin: 2rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .testimonial {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        .testimonial:hover { transform: translateY(-5px); }
+        .testimonial-avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+        .testimonial p {
+            font-style: italic;
+            margin: 1rem 0;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        .testimonial h4 {
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            color: var(--dark);
+        }
+        .testimonial small { color: #999; font-size: 0.7rem; }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            margin: 2rem;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            color: white;
+        }
+        .cta h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+        .cta p { opacity: 0.9; margin-bottom: 1.5rem; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--dark);
+            color: white;
+        }
+        .footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            opacity: 0.7;
+            font-size: 0.8rem;
+            transition: opacity 0.3s;
+        }
+        .footer a:hover { opacity: 1; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: modalFadeIn 0.3s;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .modal-content input:focus { outline: none; border-color: #1e88e5; box-shadow: 0 0 0 3px rgba(30,136,229,0.1); }
+        .modal-content button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .modal-content button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(30,136,229,0.4); }
+        .close-modal {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+        .close-modal:hover { color: #1e88e5; }
+        .toggle-auth {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+        .toggle-auth a {
+            color: #1e88e5;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .toast.error { background: #dc3545; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .portal-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: repeat(2, 1fr); margin-top: -20px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .match-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">🤖</div>
+            <div class="logo-text">JobMatch <span>🇪🇹</span><span class="logo-badge">Ethiopia</span></div>
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🇪🇹 Ethiopia's #1 AI Recruitment Platform</div>
+            <h1>Find Your Dream Job<br>with AI-Powered Matching</h1>
+            <p>Connect with top employers using our advanced machine learning technology</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="openCandidateModal()"><i class="fas fa-search"></i> I'm a Job Seeker</button>
+                <button class="btn btn-secondary" onclick="openCompanyModal()"><i class="fas fa-building"></i> I'm an Employer</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="stats">
+        <div class="stat-card"><div class="stat-number">95%</div><div class="stat-label">Matching Accuracy</div></div>
+        <div class="stat-card"><div class="stat-number">50+</div><div class="stat-label">Skills Detected</div></div>
+        <div class="stat-card"><div class="stat-number" id="statJobs">0</div><div class="stat-label">Active Jobs</div></div>
+        <div class="stat-card"><div class="stat-number" id="statCompanies">0</div><div class="stat-label">Companies</div></div>
+    </div>
+
+    <div class="portal-section">
+        <h2 class="section-title">Choose Your <span>Portal</span></h2>
+        <div class="portal-grid">
+            <!-- Candidate Portal -->
+            <div class="portal-card" onclick="openCandidateModal()">
+                <div class="portal-header candidate">
+                    <div class="portal-icon">👨‍💼</div>
+                    <h2>Job Seeker Portal</h2>
+                    <p>Find your dream job with AI</p>
+                </div>
+                <div class="portal-body">
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Complete professional profile <span class="ai-chip">AI</span></li>
+                        <li><i class="fas fa-check-circle"></i> ML-powered job matching</li>
+                        <li><i class="fas fa-check-circle"></i> View match scores & insights</li>
+                        <li><i class="fas fa-check-circle"></i> Industry-specific skill suggestions</li>
+                        <li><i class="fas fa-check-circle"></i> Track applications & status</li>
+                        <li><i class="fas fa-check-circle"></i> Get AI career recommendations</li>
+                    </ul>
+                    <button class="portal-btn candidate">Access Portal →</button>
+                </div>
+            </div>
+
+            <!-- Company Portal -->
+            <div class="portal-card" onclick="openCompanyModal()">
+                <div class="portal-header company">
+                    <div class="portal-icon">🏢</div>
+                    <h2>Employer Portal</h2>
+                    <p>Find the best talent</p>
+                </div>
+                <div class="portal-body">
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Post job openings</li>
+                        <li><i class="fas fa-check-circle"></i> AI-powered candidate ranking <span class="ai-chip">AI</span></li>
+                        <li><i class="fas fa-check-circle"></i> View match scores (0-100%)</li>
+                        <li><i class="fas fa-check-circle"></i> Set GPA and field requirements</li>
+                        <li><i class="fas fa-check-circle"></i> Shortlist top candidates</li>
+                        <li><i class="fas fa-check-circle"></i> Data-driven hiring</li>
+                    </ul>
+                    <button class="portal-btn company">Access Portal →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="features" class="features">
+        <h2 class="section-title">Why Choose <span>JobMatch ET</span>?</h2>
+        <div class="features-grid">
+            <div class="feature-item"><div class="feature-icon">📄</div><h3>Smart Profile Builder</h3><p>Complete your profile with industry-specific skills and projects</p></div>
+            <div class="feature-item"><div class="feature-icon">🎯</div><h3>ML-Powered Matching</h3><p>Advanced machine learning for accurate job matching</p></div>
+            <div class="feature-item"><div class="feature-icon">📊</div><h3>4-Factor Scoring</h3><p>Skills, Experience, NLP Summary, Education matching</p></div>
+            <div class="feature-item"><div class="feature-icon">🌍</div><h3>Ethiopia Focused</h3><p>Jobs and industries tailored for Ethiopian market</p></div>
+            <div class="feature-item"><div class="feature-icon">🏆</div><h3>Candidate Ranking</h3><p>Ranked by match score for employers</p></div>
+            <div class="feature-item"><div class="feature-icon">⚡</div><h3>Real-time Matching</h3><p>Instant job recommendations as you update your profile</p></div>
+            <div class="feature-item"><div class="feature-icon">🔬</div><h3>NLP Analysis</h3><p>Professional summary and project descriptions analyzed</p></div>
+            <div class="feature-item"><div class="feature-icon">🎓</div><h3>GPA & Education</h3><p>Track GPA and field of study for better matching</p></div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <h2 class="section-title">How It <span>Works</span></h2>
+        <div class="steps">
+            <div class="step"><div class="step-number">1</div><h3>Create Account</h3><p>Register as job seeker or employer</p></div>
+            <div class="step"><div class="step-number">2</div><h3>Complete Profile</h3><p>Add your skills and experience</p></div>
+            <div class="step"><div class="step-number">3</div><h3>AI Analysis</h3><p>Our ML model analyzes your profile</p></div>
+            <div class="step"><div class="step-number">4</div><h3>Get Matched</h3><p>View match scores and apply to jobs</p></div>
+        </div>
+    </section>
+
+    <div class="match-guide">
+        <h2 class="section-title">Match Score <span>Guide</span></h2>
+        <div class="match-grid">
+            <div class="match-item match-excellent"><strong>🏆 85-100%</strong><br>Excellent Match</div>
+            <div class="match-item match-great"><strong>⭐ 70-84%</strong><br>Great Match</div>
+            <div class="match-item match-good"><strong>👍 55-69%</strong><br>Good Match</div>
+            <div class="match-item match-potential"><strong>📌 40-54%</strong><br>Potential Match</div>
+            <div class="match-item match-low"><strong>⚠️ 0-39%</strong><br>Low Match</div>
+        </div>
+        <p style="text-align:center; margin-top:1.5rem; color:var(--gray);">Powered by Advanced Machine Learning | 4-Factor Scoring System</p>
+    </div>
+
+    <section id="testimonials" class="testimonials">
+        <h2 class="section-title">Trusted by <span>Job Seekers & Employers</span></h2>
+        <div class="testimonial-grid">
+            <div class="testimonial"><div class="testimonial-avatar">👨‍💻</div><p>"Found my dream job within a week! The AI matching is incredibly accurate."</p><h4>Dagim Tesema</h4><small>Software Engineer</small></div>
+            <div class="testimonial"><div class="testimonial-avatar">👩‍💼</div><p>"We've reduced hiring time by 70% using AI-powered candidate matching."</p><h4>Tech Corp Ethiopia</h4><small>HR Director</small></div>
+            <div class="testimonial"><div class="testimonial-avatar">👨‍🔬</div><p>"The skill gap analysis helped me identify what to learn. My match score improved dramatically!"</p><h4>Samuel Worku</h4><small>Data Scientist</small></div>
+        </div>
+    </section>
+
+    <div class="cta">
+        <h2>Ready to Start Your Journey?</h2>
+        <p>Join thousands of job seekers and employers using our AI platform</p>
+        <div class="cta-buttons">
+            <button class="btn btn-primary" onclick="openCandidateModal()" style="background:white; color:#1e88e5;"><i class="fas fa-search"></i> Find Jobs</button>
+            <button class="btn btn-secondary" onclick="openCompanyModal()" style="border-color:white; color:white;"><i class="fas fa-building"></i> Hire Talent</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 JobMatch ET | AI-Powered Recruitment Platform for Ethiopia</p>
+        <p style="margin-top:0.5rem;">
+            <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Contact Us</a>
+        </p>
+        <p style="margin-top:0.5rem; font-size:0.7rem;"><i class="fas fa-brain"></i> Powered by Advanced Machine Learning & NLP</p>
+    </footer>
+
+    <!-- Candidate Modal -->
+    <div id="candidateModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('candidateModal')">&times;</span>
+            <h2><i class="fas fa-user"></i> Job Seeker Portal</h2>
+            <div id="candidateLoginForm">
+                <input type="email" id="candidateEmail" placeholder="Email" value="candidate@test.com">
+                <input type="password" id="candidatePassword" placeholder="Password" value="123456">
+                <button onclick="candidateLogin()">Login</button>
+                <div class="toggle-auth">Don't have an account? <a onclick="showCandidateRegister()">Register here</a></div>
+            </div>
+            <div id="candidateRegisterForm" style="display:none;">
+                <input type="text" id="candidateFullName" placeholder="Full Name" value="Test Candidate">
+                <input type="email" id="candidateRegEmail" placeholder="Email" value="candidate@test.com">
+                <input type="password" id="candidateRegPassword" placeholder="Password" value="123456">
+                <input type="tel" id="candidatePhone" placeholder="Phone" value="0912345678">
+                <input type="text" id="candidateLocation" placeholder="Location" value="Addis Ababa">
+                <button onclick="candidateRegister()">Register</button>
+                <div class="toggle-auth">Already have an account? <a onclick="showCandidateLogin()">Login here</a></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Company Modal -->
+    <div id="companyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('companyModal')">&times;</span>
+            <h2><i class="fas fa-building"></i> Employer Portal</h2>
+            <div id="companyLoginForm">
+                <input type="email" id="companyEmail" placeholder="Email" value="company@test.com">
+                <input type="password" id="companyPassword" placeholder="Password" value="123456">
+                <button onclick="companyLogin()">Login</button>
+                <div class="toggle-auth">Don't have an account? <a onclick="showCompanyRegister()">Register here</a></div>
+            </div>
+            <div id="companyRegisterForm" style="display:none;">
+                <input type="text" id="companyName" placeholder="Company Name" value="Test Company">
+                <input type="email" id="companyRegEmail" placeholder="Email" value="company@test.com">
+                <input type="password" id="companyRegPassword" placeholder="Password" value="123456">
+                <input type="text" id="companyLocation" placeholder="Location" value="Addis Ababa">
+                <input type="text" id="companyIndustry" placeholder="Industry" value="Technology">
+                <button onclick="companyRegister()">Register</button>
+                <div class="toggle-auth">Already have an account? <a onclick="showCompanyLogin()">Login here</a></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://localhost:8000/api";
+
+        // Particles animation
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 6 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Load stats from backend
+        async function loadStats() {
+            try {
+                const response = await fetch('http://localhost:8000/');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('statJobs').innerText = data.jobs || 0;
+                    document.getElementById('statCompanies').innerText = data.companies || 0;
+                }
+            } catch(e) {
+                console.log('Backend connecting...');
+                document.getElementById('statJobs').innerText = '...';
+                document.getElementById('statCompanies').innerText = '...';
+            }
+        }
+
+        // Modal functions
+        function openCandidateModal() { document.getElementById('candidateModal').classList.add('active'); }
+        function openCompanyModal() { document.getElementById('companyModal').classList.add('active'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+
+        function showCandidateRegister() {
+            document.getElementById('candidateLoginForm').style.display = 'none';
+            document.getElementById('candidateRegisterForm').style.display = 'block';
+        }
+        function showCandidateLogin() {
+            document.getElementById('candidateRegisterForm').style.display = 'none';
+            document.getElementById('candidateLoginForm').style.display = 'block';
+        }
+        function showCompanyRegister() {
+            document.getElementById('companyLoginForm').style.display = 'none';
+            document.getElementById('companyRegisterForm').style.display = 'block';
+        }
+        function showCompanyLogin() {
+            document.getElementById('companyRegisterForm').style.display = 'none';
+            document.getElementById('companyLoginForm').style.display = 'block';
+        }
+
+        // Candidate functions
+        async function candidateLogin() {
+            const email = document.getElementById('candidateEmail').value;
+            const password = document.getElementById('candidatePassword').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('userId', data.user_id);
+                    localStorage.setItem('userType', data.user_type);
+                    localStorage.setItem('userName', data.name);
+                    showToast('✅ Login successful! Redirecting...');
+                    setTimeout(() => { window.location.href = 'candidate-dashboard.html'; }, 1000);
+                } else {
+                    showToast(data.detail || 'Login failed', true);
+                }
+            } catch(err) {
+                showToast('Cannot connect to backend. Make sure it\'s running on port 8000', true);
+            }
+        }
+
+        async function candidateRegister() {
+            const fullName = document.getElementById('candidateFullName').value;
+            const email = document.getElementById('candidateRegEmail').value;
+            const password = document.getElementById('candidateRegPassword').value;
+            const phone = document.getElementById('candidatePhone').value;
+            const location = document.getElementById('candidateLocation').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/register/user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, full_name: fullName, phone, location })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('userId', data.user_id);
+                    localStorage.setItem('userType', data.user_type);
+                    localStorage.setItem('userName', data.name);
+                    showToast('✅ Registration successful! Redirecting...');
+                    setTimeout(() => { window.location.href = 'candidate-dashboard.html'; }, 1000);
+                } else {
+                    showToast(data.detail || 'Registration failed', true);
+                }
+            } catch(err) {
+                showToast('Cannot connect to backend', true);
+            }
+        }
+
+        // Company functions
+        async function companyLogin() {
+            const email = document.getElementById('companyEmail').value;
+            const password = document.getElementById('companyPassword').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('userId', data.user_id);
+                    localStorage.setItem('userType', data.user_type);
+                    localStorage.setItem('userName', data.name);
+                    showToast('✅ Login successful! Redirecting...');
+                    setTimeout(() => { window.location.href = 'company-dashboard.html'; }, 1000);
+                } else {
+                    showToast(data.detail || 'Login failed', true);
+                }
+            } catch(err) {
+                showToast('Cannot connect to backend', true);
+            }
+        }
+
+        async function companyRegister() {
+            const companyName = document.getElementById('companyName').value;
+            const email = document.getElementById('companyRegEmail').value;
+            const password = document.getElementById('companyRegPassword').value;
+            const location = document.getElementById('companyLocation').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/register/company`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, company_name: companyName, location })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('userId', data.user_id);
+                    localStorage.setItem('userType', data.user_type);
+                    localStorage.setItem('userName', data.name);
+                    showToast('✅ Registration successful! Redirecting...');
+                    setTimeout(() => { window.location.href = 'company-dashboard.html'; }, 1000);
+                } else {
+                    showToast(data.detail || 'Registration failed', true);
+                }
+            } catch(err) {
+                showToast('Cannot connect to backend', true);
+            }
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${isError ? 'error' : ''}`;
+            toast.innerHTML = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Initialize
+        createParticles();
+        loadStats();
+        setInterval(loadStats, 30000);
+    </script>
+</body>
+</html>

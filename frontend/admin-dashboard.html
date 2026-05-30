@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch ET - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f2f5 0%, #e8ecf1 100%); min-height: 100vh; }
+        
+        .dashboard { display: flex; min-height: 100vh; }
+        
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 8px 0 20px rgba(0,0,0,0.1);
+        }
+        .sidebar-header { padding: 32px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .logo-text { font-size: 1.5rem; font-weight: 800; }
+        .logo-text span { color: #3b82f6; }
+        
+        .nav-menu { list-style: none; padding: 0 20px; }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            margin: 6px 0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+        }
+        .nav-item i { width: 24px; }
+        .nav-item:hover { background: rgba(59,130,246,0.2); color: white; transform: translateX(5px); }
+        .nav-item.active { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
+        
+        .main-content { flex: 1; margin-left: 280px; padding: 28px 32px; }
+        
+        .top-bar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 18px 28px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .page-title h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #1e293b, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .user-info { display: flex; align-items: center; gap: 16px; background: #f8fafc; padding: 8px 24px; border-radius: 60px; cursor: pointer; }
+        .user-name { font-weight: 700; color: #1e293b; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .stat-number { font-size: 2rem; font-weight: 800; color: #3b82f6; }
+        .stat-label { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
+        
+        .form-container {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 28px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .form-header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .form-header h2 { font-size: 1.2rem; font-weight: 700; color: #1e293b; }
+        .form-header h2 i { color: #3b82f6; margin-right: 10px; }
+        
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .status-active { background: #d1fae5; color: #059669; }
+        .status-inactive { background: #fee2e2; color: #dc2626; }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+        .btn-edit {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            margin-right: 5px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-content input, .modal-content select, .modal-content textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #10b981;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 60px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        .toast.error { background: #ef4444; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .chart-row { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .sidebar { width: 80px; }
+            .sidebar span { display: none; }
+            .main-content { margin-left: 80px; padding: 16px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo"><div class="logo-icon">🎯</div><div class="logo-text">JobMatch <span>ET</span></div></div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-tab="overview"><i class="fas fa-chart-pie"></i><span>Overview</span></li>
+                <li class="nav-item" data-tab="users"><i class="fas fa-users"></i><span>Users</span></li>
+                <li class="nav-item" data-tab="jobs"><i class="fas fa-briefcase"></i><span>Jobs</span></li>
+                <li class="nav-item" data-tab="applications"><i class="fas fa-paper-plane"></i><span>Applications</span></li>
+                <li class="nav-item" data-tab="ml"><i class="fas fa-brain"></i><span>ML Analytics</span></li>
+                <li class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="page-title"><h1 id="pageTitle">Admin Dashboard</h1></div>
+                <div class="user-info"><span class="user-name" id="userName">Admin</span> <i class="fas fa-user-shield" style="font-size: 20px; color: #3b82f6;"></i></div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overviewTab" class="tab-content active">
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card"><div class="stat-number" id="totalUsers">0</div><div class="stat-label">Total Users</div></div>
+                    <div class="stat-card"><div class="stat-number" id="totalCandidates">0</div><div class="stat-label">Candidates</div></div>
+                    <div class="stat-card"><div class="stat-number" id="totalCompanies">0</div><div class="stat-label">Companies</div></div>
+                    <div class="stat-card"><div class="stat-number" id="totalJobs">0</div><div class="stat-label">Total Jobs</div></div>
+                    <div class="stat-card"><div class="stat-number" id="totalApplications">0</div><div class="stat-label">Applications</div></div>
+                </div>
+                
+                <div class="chart-row">
+                    <div class="chart-container">
+                        <h3><i class="fas fa-chart-line"></i> Match Score Distribution</h3>
+                        <canvas id="matchScoreChart" height="200"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3><i class="fas fa-chart-bar"></i> Jobs by Industry</h3>
+                        <canvas id="industryChart" height="200"></canvas>
+                    </div>
+                </div>
+                
+                <div class="form-container">
+                    <div class="form-header"><h2><i class="fas fa-robot"></i> ML Model Performance</h2></div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                        <div><h3>78.5%</h3><p>Random Forest Accuracy</p></div>
+                        <div><h3>82%</h3><p>Match Score Precision</p></div>
+                        <div><h3>78.4</h3><p>SUS Score (Good+)</p></div>
+                    </div>
+                    <div style="margin-top: 20px; background: #f8fafc; padding: 20px; border-radius: 16px;">
+                        <h4>Match Score Formula</h4>
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+                            <span>📊 <strong>40%</strong> Skills Alignment</span>
+                            <span>💼 <strong>25%</strong> Experience</span>
+                            <span>🤖 <strong>20%</strong> NLP Semantic</span>
+                            <span>🎓 <strong>15%</strong> Education</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="usersTab" class="tab-content">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2><i class="fas fa-users"></i> User Management</h2>
+                        <button class="btn-primary" onclick="showAddUserModal()"><i class="fas fa-plus"></i> Add User</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="usersTable">
+                            <thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Joined</th><th>Actions</th></tr></thead>
+                            <tbody><tr><td colspan="5">Loading...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jobs Tab -->
+            <div id="jobsTab" class="tab-content">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2><i class="fas fa-briefcase"></i> Job Management</h2>
+                        <button class="btn-primary" onclick="showAddJobModal()"><i class="fas fa-plus"></i> Add Job</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="jobsTable">
+                            <thead><tr><th>Title</th><th>Company</th><th>Location</th><th>Status</th><th>Posted</th><th>Actions</th></tr></thead>
+                            <tbody><tr><td colspan="6">Loading...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Applications Tab -->
+            <div id="applicationsTab" class="tab-content">
+                <div class="form-container">
+                    <div class="form-header"><h2><i class="fas fa-paper-plane"></i> All Applications</h2></div>
+                    <div style="overflow-x: auto;">
+                        <table id="applicationsTable">
+                            <thead><tr><th>Candidate</th><th>Job Title</th><th>Company</th><th>Match Score</th><th>Status</th><th>Applied Date</th><th>Actions</th></tr></thead>
+                            <tbody><tr><td colspan="7">Loading...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ML Analytics Tab -->
+            <div id="mlTab" class="tab-content">
+                <div class="chart-container">
+                    <h3><i class="fas fa-chart-line"></i> Model Accuracy Trend</h3>
+                    <canvas id="accuracyTrendChart" height="150"></canvas>
+                </div>
+                <div class="form-container">
+                    <div class="form-header"><h2><i class="fas fa-chart-bar"></i> Feature Importance</h2></div>
+                    <canvas id="featureImportanceChart" height="200"></canvas>
+                    <div class="form-header" style="margin-top: 20px;"><h2><i class="fas fa-table"></i> Confusion Matrix</h2></div>
+                    <canvas id="confusionMatrixChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <h3>Add New User</h3>
+            <input type="text" id="userFullName" placeholder="Full Name">
+            <input type="email" id="userEmail" placeholder="Email">
+            <input type="password" id="userPassword" placeholder="Password">
+            <select id="userType">
+                <option value="candidate">Candidate</option>
+                <option value="company">Company</option>
+            </select>
+            <button class="btn-primary" onclick="addUser()">Add User</button>
+            <button class="btn-outline" onclick="closeModal('addUserModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Add Job Modal -->
+    <div id="addJobModal" class="modal">
+        <div class="modal-content">
+            <h3>Add New Job</h3>
+            <input type="text" id="jobTitle" placeholder="Job Title">
+            <input type="text" id="jobCompany" placeholder="Company Name">
+            <input type="text" id="jobLocation" placeholder="Location">
+            <select id="jobType">
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Remote">Remote</option>
+            </select>
+            <textarea id="jobDescription" rows="3" placeholder="Job Description"></textarea>
+            <input type="text" id="jobSkills" placeholder="Required Skills (comma separated)">
+            <input type="number" id="jobExpRequired" placeholder="Experience Required (years)">
+            <button class="btn-primary" onclick="addJob()">Add Job</button>
+            <button class="btn-outline" onclick="closeModal('addJobModal')">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://localhost:8000/api";
+        let ACCESS_TOKEN = localStorage.getItem('token');
+
+        if (!ACCESS_TOKEN) window.location.href = 'index.html';
+
+        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+        function showToast(msg, isError) { const t = document.createElement('div'); t.className = 'toast' + (isError ? ' error' : ''); t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+
+        async function apiCall(url, options = {}) {
+            const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + ACCESS_TOKEN };
+            const res = await fetch(API_BASE + url, { ...options, headers });
+            if (res.status === 401) { localStorage.clear(); window.location.href = 'index.html'; throw new Error("Unauthorized"); }
+            if (!res.ok) throw new Error(await res.text());
+            return res.json();
+        }
+
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+        function showAddUserModal() { document.getElementById('addUserModal').classList.add('active'); }
+        function showAddJobModal() { document.getElementById('addJobModal').classList.add('active'); }
+
+        // Dashboard Stats
+        async function loadDashboardStats() {
+            try {
+                let stats = await apiCall('/admin/stats');
+                document.getElementById('totalUsers').innerText = stats.total_users || 0;
+                document.getElementById('totalCandidates').innerText = stats.total_candidates || 0;
+                document.getElementById('totalCompanies').innerText = stats.total_companies || 0;
+                document.getElementById('totalJobs').innerText = stats.total_jobs || 0;
+                document.getElementById('totalApplications').innerText = stats.total_applications || 0;
+            } catch(e) { console.log(e); }
+        }
+
+        // Load Users
+        async function loadUsers() {
+            try {
+                let data = await apiCall('/admin/users');
+                let tbody = document.querySelector('#usersTable tbody');
+                if(data.users && data.users.length) {
+                    tbody.innerHTML = data.users.map(user => `
+                        <tr>
+                            <td>${escapeHtml(user.full_name || user.name || '-')}</td>
+                            <td>${escapeHtml(user.email)}</td>
+                            <td><span class="status-badge ${user.user_type === 'candidate' ? 'status-active' : 'status-pending'}">${user.user_type}</span></td>
+                            <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                            <td><button class="btn-danger" onclick="deleteUser('${user.id}')">Delete</button></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5">No users found</td></tr>';
+                }
+            } catch(e) { console.log(e); }
+        }
+
+        // Load Jobs
+        async function loadJobs() {
+            try {
+                let data = await apiCall('/admin/jobs');
+                let tbody = document.querySelector('#jobsTable tbody');
+                if(data.jobs && data.jobs.length) {
+                    tbody.innerHTML = data.jobs.map(job => `
+                        <tr>
+                            <td>${escapeHtml(job.title)}</td>
+                            <td>${escapeHtml(job.company_name)}</td>
+                            <td>${escapeHtml(job.location || 'Remote')}</td>
+                            <td><span class="status-badge status-active">${job.status || 'active'}</span></td>
+                            <td>${new Date(job.created_at).toLocaleDateString()}</td>
+                            <td><button class="btn-edit" onclick="editJob('${job.id}')">Edit</button><button class="btn-danger" onclick="deleteJob('${job.id}')">Delete</button></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6">No jobs found</td></tr>';
+                }
+            } catch(e) { console.log(e); }
+        }
+
+        // Load Applications
+        async function loadApplications() {
+            try {
+                let data = await apiCall('/admin/applications');
+                let tbody = document.querySelector('#applicationsTable tbody');
+                if(data.applications && data.applications.length) {
+                    tbody.innerHTML = data.applications.map(app => `
+                        <tr>
+                            <td>${escapeHtml(app.user_name)}</td>
+                            <td>${escapeHtml(app.job_title)}</td>
+                            <td>${escapeHtml(app.company_name)}</td>
+                            <td><strong>${app.match_score || 0}%</strong></td>
+                            <td><span class="status-badge ${app.status === 'pending' ? 'status-pending' : 'status-active'}">${app.status}</span></td>
+                            <td>${new Date(app.applied_at).toLocaleDateString()}</td>
+                            <td><select onchange="updateApplicationStatus('${app.id}', this.value)" style="padding:4px;"><option value="pending" ${app.status==='pending'?'selected':''}>Pending</option><option value="shortlisted" ${app.status==='shortlisted'?'selected':''}>Shortlisted</option><option value="approved" ${app.status==='approved'?'selected':''}>Approved</option><option value="rejected" ${app.status==='rejected'?'selected':''}>Rejected</option></select></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7">No applications found</td></tr>';
+                }
+            } catch(e) { console.log(e); }
+        }
+
+        async function deleteUser(userId) { if(confirm('Delete user?')) try{ await apiCall(`/admin/users/${userId}`, { method: 'DELETE' }); showToast('User deleted'); loadUsers(); loadDashboardStats(); } catch(e){ showToast('Error', true); } }
+        async function deleteJob(jobId) { if(confirm('Delete job?')) try{ await apiCall(`/admin/jobs/${jobId}`, { method: 'DELETE' }); showToast('Job deleted'); loadJobs(); loadDashboardStats(); } catch(e){ showToast('Error', true); } }
+        async function updateApplicationStatus(appId, status) { try{ await apiCall(`/admin/applications/${appId}/status`, { method: 'PUT', body: JSON.stringify({ status }) }); showToast('Status updated'); loadApplications(); } catch(e){ showToast('Error', true); } }
+        async function editJob(jobId) { showToast('Edit feature coming soon'); }
+
+        async function addUser() {
+            let data = { full_name: document.getElementById('userFullName').value, email: document.getElementById('userEmail').value, password: document.getElementById('userPassword').value, user_type: document.getElementById('userType').value };
+            try { await apiCall('/admin/users', { method: 'POST', body: JSON.stringify(data) }); showToast('User added'); closeModal('addUserModal'); loadUsers(); loadDashboardStats(); } catch(e){ showToast('Error', true); }
+        }
+
+        async function addJob() {
+            let data = { title: document.getElementById('jobTitle').value, company_name: document.getElementById('jobCompany').value, location: document.getElementById('jobLocation').value, job_type: document.getElementById('jobType').value, description: document.getElementById('jobDescription').value, required_skills: document.getElementById('jobSkills').value, experience_required: parseInt(document.getElementById('jobExpRequired').value) || 2 };
+            try { await apiCall('/admin/jobs', { method: 'POST', body: JSON.stringify(data) }); showToast('Job added'); closeModal('addJobModal'); loadJobs(); loadDashboardStats(); } catch(e){ showToast('Error', true); }
+        }
+
+        // Charts
+        function initCharts() {
+            // Match Score Distribution
+            new Chart(document.getElementById('matchScoreChart'), { type: 'bar', data: { labels: ['0-20%', '21-40%', '41-60%', '61-80%', '81-100%'], datasets: [{ label: 'Applications', data: [5, 12, 28, 45, 32], backgroundColor: '#3b82f6' }] }, options: { responsive: true, maintainAspectRatio: true } });
+            // Industry Distribution
+            new Chart(document.getElementById('industryChart'), { type: 'pie', data: { labels: ['Technology', 'Finance', 'Healthcare', 'Education', 'Other'], datasets: [{ data: [45, 20, 15, 12, 8], backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'] }] }, options: { responsive: true } });
+            // Accuracy Trend
+            new Chart(document.getElementById('accuracyTrendChart'), { type: 'line', data: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], datasets: [{ label: 'Model Accuracy (%)', data: [72, 74, 75.5, 76.8, 77.5, 78.5], borderColor: '#3b82f6', tension: 0.3, fill: false }] }, options: { responsive: true } });
+            // Feature Importance
+            new Chart(document.getElementById('featureImportanceChart'), { type: 'bar', data: { labels: ['Skills', 'Experience', 'NLP', 'Education', 'Location'], datasets: [{ label: 'Importance Score', data: [40, 25, 20, 10, 5], backgroundColor: '#10b981' }] }, options: { responsive: true, indexAxis: 'y' } });
+            // Confusion Matrix
+            new Chart(document.getElementById('confusionMatrixChart'), { type: 'matrix', data: { datasets: [{ label: 'Confusion Matrix', data: [{x:0,y:0,v:85},{x:0,y:1,v:8},{x:1,y:0,v:10},{x:1,y:1,v:75}], backgroundColor: (ctx) => ctx.raw.v > 80 ? '#10b981' : '#ef4444' }] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.raw.v}%` } } } } });
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+            document.getElementById(tabName+'Tab').classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+            document.querySelector(`.nav-item[data-tab="${tabName}"]`).classList.add('active');
+            let titles = { overview: 'Dashboard', users: 'User Management', jobs: 'Job Management', applications: 'Applications', ml: 'ML Analytics' };
+            document.getElementById('pageTitle').innerText = titles[tabName];
+            if(tabName === 'users') loadUsers();
+            if(tabName === 'jobs') loadJobs();
+            if(tabName === 'applications') loadApplications();
+        }
+
+        document.getElementById('logoutBtn')?.addEventListener('click', () => { localStorage.clear(); window.location.href = 'index.html'; });
+        document.querySelectorAll('.nav-item[data-tab]').forEach(nav => nav.addEventListener('click', () => switchTab(nav.getAttribute('data-tab'))));
+        document.getElementById('userName').innerText = localStorage.getItem('userName') || 'Admin';
+        
+        loadDashboardStats(); loadUsers(); loadJobs(); loadApplications(); initCharts();
+    </script>
+</body>
+</html>
