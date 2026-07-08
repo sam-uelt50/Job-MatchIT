@@ -877,6 +877,8 @@
     </div>
 
     <script>
+        // ============ API CONFIGURATION ============
+        // Point to the deployed backend on Render
         const API_BASE = "https://job-matchit.onrender.com/api";
 
         // Particles animation
@@ -895,10 +897,10 @@
             }
         }
 
-        // Load stats from backend
+        // Load stats from backend - NOW USING CORRECT URL
         async function loadStats() {
             try {
-                const response = await fetch('http://localhost:8000/');
+                const response = await fetch('https://job-matchit.onrender.com/');
                 if (response.ok) {
                     const data = await response.json();
                     document.getElementById('statJobs').innerText = data.jobs || 0;
