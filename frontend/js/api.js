@@ -2,7 +2,7 @@
 // frontend/js/api.js - Complete API Integration for AI Recruitment Platform
 
 // API Base URL - Change this if your backend is on a different port
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = "https://job-matchit.onrender.com/api";
 
 // Helper function to handle API responses
 async function handleResponse(response) {
@@ -233,7 +233,7 @@ const api = {
         
         // Health check
         health: async () => {
-            const response = await fetch(`http://localhost:8000/health`);
+            const response = await fetch(`https://job-matchit.onrender.com`);
             return response.json();
         }
     }
