@@ -18,17 +18,16 @@ app = FastAPI(title="JobMatch ET API")
 # ============ CORS ============
 app.add_middleware(
     CORSMiddleware,
+    allow_origin_regex=r"https://.*\.netlify\.app",
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "https://famous-pasca-9093d1.netlify.app",
-        "https://*.netlify.app"  # Allows any Netlify subdomain
+        "https://famous-pasca-9093d1.netlify.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # ============ DATABASE ============
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'job_recruitment.db')
 
