@@ -483,7 +483,7 @@ class KeyboardShortcuts {
 
 const toast = new ToastManager();
 const loading = new LoadingOverlay();
-const api = new APIClient('http://localhost:8000/api');
+const api = new APIClient('https://job-matchit.onrender.com);
 const keyboard = new KeyboardShortcuts();
 
 // Export for use in other files
