@@ -1,39 +1,104 @@
 ﻿# 🎯 JobMatch ET - AI-Powered Job Matching Platform for Ethiopia
 
+![JobMatch ET Banner](screenshots/landing-page.png)
+
 ## 📌 Overview
-AI-powered recruitment platform using **Random Forest Machine Learning** with **78.5% accuracy** to match job seekers with employers.
 
-## 🚀 Features
-- 🤖 **AI-Powered Matching** - Random Forest ML with 78.5% accuracy
-- 📊 **4-Factor Scoring** - Skills (40%) + Experience (25%) + NLP (20%) + Education (15%)
-- 👨‍💼 **Candidate Portal** - Profile, skill suggestions, apply to jobs
-- 🏢 **Employer Portal** - Post jobs, rank candidates
-- 👑 **Admin Dashboard** - User & job management
-- 📄 **CV Upload** - Share CV with employers
+**JobMatch ET** is an AI-powered recruitment and job recommendation platform built for the Ethiopian job market.
 
-## 📊 System Performance
-| Metric | Value |
-|--------|-------|
-| Training Data | 41,953 job postings |
-| ML Accuracy | 78.5% |
-| Precision | 82% |
-| SUS Score | 78.4 (Good+) |
+The platform uses **Machine Learning (Random Forest)** and intelligent matching algorithms to connect job seekers with suitable opportunities based on skills, experience, education, and job requirements.
 
-## 🛠️ Tech Stack
-- **Backend**: FastAPI, Python, JWT, SQLite
-- **Frontend**: HTML5, CSS3, JavaScript
-- **ML**: Random Forest, NLP
-- **Auth**: JWT + bcrypt
+The system helps employers find qualified candidates faster while helping job seekers discover relevant career opportunities.
 
-## 🚀 Quick Start
-`ash
-# Backend
-cd Backend
-pip install fastapi uvicorn python-jose[cryptography] passlib[bcrypt] python-multipart
-python -m uvicorn app.main:app --reload --port 8000
+---
 
-# Frontend (new terminal)
-cd frontend
-python -m http.server 3000
+# 🚀 Live Demo & Links
+
+🌐 **Frontend Live Demo:**  
+https://famous-pasca-9093d1.netlify.app
+
+⚙️ **Backend API:**  
+https://job-matchit.onrender.com
+
+📖 **API Documentation:**  
+https://job-matchit.onrender.com/docs
+
+💻 **GitHub Repository:**  
+https://github.com/sam-uelt50/Job-MatchIT
+
+---
+# 📸 Screenshots
+
+## Landing Page
+
+![Landing Page](./screenshots/landing-page.png)
 
 
+## 🤖 AI Job Matching Dashboard
+
+![AI Jobmatch Dashboard](./screenshots/ai-jobmatch-dashboard.png)
+
+
+## 👨‍💻 Job Seeker Dashboard
+
+![Job Seeker Dashboard](./screenshots/jobseeker-dashboard.png)
+
+
+## 🏢 Employer Dashboard
+
+![Employer Dashboard](./screenshots/employer-dashboard.png)
+
+
+## 📌 Job Posting Dashboard
+
+![Job Post Dashboard](./screenshots/job-post-dashboard.png)
+
+
+## 📄 Application Dashboard
+
+![Application Dashboard](./screenshots/application-dashboard.png)
+# 💼 Portfolio Description
+
+## JobMatch ET — AI-Powered Job Matching Platform
+
+A full-stack AI recruitment platform that uses **Machine Learning and NLP-based matching techniques** to recommend jobs and rank candidates.
+
+Built with **FastAPI, JavaScript, SQLite, and Random Forest ML**, the platform provides candidate profiles, employer job management, AI recommendations, and automated candidate matching.
+
+**Key Highlights:**
+
+- 🤖 AI job recommendation engine
+- 📊 Random Forest ML model with 78.5% accuracy
+- 👨‍💻 Candidate and employer dashboards
+- 📄 CV/profile management system
+- 🔐 Secure JWT authentication
+- 🌍 Deployed frontend and backend system
+
+---
+
+# 🛠️ Technology Stack
+
+**Frontend**
+- HTML5
+- CSS3
+- JavaScript
+
+**Backend**
+- Python
+- FastAPI
+- REST API
+- JWT Authentication
+
+**Database**
+- SQLite
+
+**Machine Learning**
+- Scikit-learn
+- Random Forest
+- NLP Processing
+
+**Deployment**
+- Netlify (Frontend)
+- Render (Backend)
+
+---
